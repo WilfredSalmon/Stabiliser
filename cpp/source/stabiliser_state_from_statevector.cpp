@@ -21,7 +21,6 @@ namespace
 			return {};
 		}
 
-		const std::size_t number_qubits = integral_log_2(state_vector_size);
 		std::size_t shift = 0;
 
 		while (shift < state_vector_size && statevector[shift] == float(0))
@@ -34,8 +33,9 @@ namespace
 			return {};
 		}
 
+		const std::size_t indices_capacity = state_vector_size - shift + 1;
 		std::vector<std::size_t> vector_space_indices;
-		vector_space_indices.reserve(state_vector_size + 1);
+		vector_space_indices.reserve( indices_capacity );
 		vector_space_indices.push_back(0);
 
 		for (std::size_t index = shift + 1; index < state_vector_size; index++)
@@ -47,6 +47,7 @@ namespace
 		}
 
 		const std::size_t support_size = vector_space_indices.size();
+		assert( support_size <= indices_capacity ); // Our reserve should always be correct capacity to avoid re-allocations
 
 		if (!is_power_of_2(support_size))
 		{
@@ -78,7 +79,7 @@ namespace
 			const std::size_t basis_vector = vector_space_indices[weight_one_string];
 			basis_vectors.push_back(basis_vector);
 
-			std::complex<float> phase = statevector[basis_vector ^ shift] / first_entry;
+			const std::complex<float> phase = statevector[basis_vector ^ shift] / first_entry;
 
 			if (std::norm(phase - float(-1)) < 0.125)
 			{
@@ -158,12 +159,12 @@ namespace
 
 		if constexpr (return_state)
 		{
-			Stabiliser_State state(number_qubits, dimension);
+			Stabiliser_State state( integral_log_2( state_vector_size ), dimension);
 			state.shift = shift;
 			state.basis_vectors = std::move(basis_vectors);
 			state.real_linear_part = real_linear_part;
 			state.imaginary_part = imaginary_part;
-			state.quadratic_form = quadratic_form;
+			state.quadratic_form = std::move(quadratic_form);
 			state.global_phase = global_phase;
 			state.row_reduced = true;
 			return state;
