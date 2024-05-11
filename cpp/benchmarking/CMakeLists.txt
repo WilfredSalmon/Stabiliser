@@ -13,5 +13,5 @@ target_link_libraries(
 		benchmark::benchmark
 		benchmark::benchmark_main
 		stim
-		stabiliser_state 
+		FastStabiliser 
 )

@@ -24,5 +24,5 @@ endif()
 
 find_package( Catch2 3 REQUIRED )
 
-include( CTest )
+enable_testing()
 add_subdirectory( "cpp" )

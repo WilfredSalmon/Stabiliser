@@ -7,8 +7,7 @@ add_executable( tests
     pauli_test.cpp
 )
 
-target_link_libraries( tests PRIVATE Catch2::Catch2WithMain stabiliser_state )
+target_link_libraries( tests PRIVATE Catch2::Catch2WithMain FastStabiliser )
 
-include(CTest)
 include(Catch)
 catch_discover_tests(tests)
