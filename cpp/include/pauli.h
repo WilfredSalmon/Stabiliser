@@ -3,6 +3,7 @@
 
 #include <complex>
 #include <vector>
+#include <span>
 
 // TODO: add verification for pauli/pauli and pauli/vector multiplication where
 // dimensions don't match
@@ -12,8 +13,9 @@ namespace fst
     /// The class used to represent a Pauli operator.
     /// Puali is (-1)^(sign_bit) * (-i)^(imag_bit) * X^(x_vector) * Z^(z_vector)
     /// The phase of the Pauli is (-1)^(sign_bit) * (-i)^(imag_bit)
-    struct Pauli
+    class Pauli
     {
+      private:
         std::size_t number_qubits = 0;
         std::size_t x_vector = 0;
         std::size_t z_vector = 0;
@@ -22,7 +24,9 @@ namespace fst
         unsigned int imag_bit = 0;
         std::complex<float> phase = 1;
 
-        Pauli(const std::size_t number_qubits, const std::size_t x_vector, const std::size_t z_vector, const bool sign_bit, const bool imag_bit);
+      public:
+        Pauli(const std::size_t number_qubits, const std::size_t x_vector, const std::size_t z_vector,
+              const bool sign_bit, const bool imag_bit);
 
         /// Updates the phase to be consistent with the current sign & imag bits
         void update_phase();
@@ -38,13 +42,13 @@ namespace fst
         /// Given a statevector x on the same number of qubits as the Pauli P, check
         /// whether or not Px = (-1)^(eig_sign) x, i.e. whether x is an eigenstate of P
         /// with eigenvalue (-1)^(eig_sign).
-        bool has_eigenstate(const std::vector<std::complex<float>> &vector, const unsigned int eign_sign) const;
+        bool has_eigenstate(const std::span<const std::complex<float>> vector, const unsigned int eign_sign) const;
 
         /// Returns the matrix of the Pauli (with respect to the computational basis)
         std::vector<std::vector<std::complex<float>>> get_matrix() const;
 
         /// Given a vector x on the same number of qubits as the Pauli P, return Px
-        std::vector<std::complex<float>> multiply_vector(const std::vector<std::complex<float>> &vector) const;
+        std::vector<std::complex<float>> multiply_vector(const std::span<const std::complex<float>> vector) const;
 
         /// Given another pauli Q, multiply this Pauli on the right by Q
         /// Note, the current instance is set to the result.
