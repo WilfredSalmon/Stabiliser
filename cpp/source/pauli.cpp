@@ -12,12 +12,13 @@ namespace fst
 
     void Pauli::update_phase()
     {
-        phase = {f_min1_pow(sign_bit) * float_not(imag_bit), -f_min1_pow(sign_bit) * static_cast<float>(imag_bit)};
+        phase = {f_min1_pow(sign_bit) * !imag_bit, -f_min1_pow(sign_bit) * static_cast<float>(imag_bit)};
     }
 
     bool Pauli::is_hermitian() const
     {
-        return imag_bit == f2_dot_product(x_vector, z_vector);
+        const bool value = f2_dot_product(x_vector, z_vector);
+        return imag_bit == value;
     }
 
     bool Pauli::anticommutes_with(const Pauli &other_pauli) const
@@ -59,7 +60,7 @@ namespace fst
     void Pauli::multiply_by_pauli_on_right(const Pauli &other_pauli)
     {
         imag_bit ^= other_pauli.imag_bit;
-        const int sign_bit_update = f2_dot_product(z_vector, other_pauli.x_vector) ^ (imag_bit & other_pauli.imag_bit);
+        const bool sign_bit_update = f2_dot_product(z_vector, other_pauli.x_vector) ^ (imag_bit & other_pauli.imag_bit);
         sign_bit ^= sign_bit_update;
         update_phase();
 

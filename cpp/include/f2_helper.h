@@ -29,26 +29,15 @@ namespace fst
 		return std::has_single_bit(number);
 	}
 
-	/// For an integer number (which should be 0 or 1), returns the
-	/// negation of the number (i.e. 1-it) as a float
-	template <std::unsigned_integral T>
-	constexpr float float_not(const T number) noexcept
+	/// If true, return -1, else return 1
+	constexpr int min1_pow(const bool value) noexcept
 	{
-		return static_cast<float>(number ^ 1);
-	}
-
-	/// For an integer number (which should be 0 or 1), returns
-	/// (-1)^number as an integer
-	template <std::unsigned_integral T>
-	constexpr int min1_pow(const T number) noexcept
-	{
-		return 1 - 2 * number;
+		return 1 - 2 * static_cast<int>( value );
 	}
 
 	/// For an integer number (which should be 0 or 1), returns
 	/// (-1)^number as a float
-	template <std::unsigned_integral T>
-	constexpr float f_min1_pow(const T number) noexcept
+	constexpr float f_min1_pow(const bool number) noexcept
 	{
 		return static_cast<float>(min1_pow(number));
 	}
@@ -77,7 +66,7 @@ namespace fst
 	constexpr std::complex<float> imag_f2_dot_product(const T x, const T y) noexcept
 	{
 		const unsigned int dot_product = f2_dot_product(x, y);
-		return {float_not(dot_product), static_cast<float>(dot_product)};
+		return {static_cast<float>( !dot_product ), static_cast<float>(dot_product)};
 	}
 
 	/// Given vector_index, the column vector of an element of the vector

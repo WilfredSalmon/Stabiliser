@@ -20,9 +20,10 @@ namespace fst
         std::size_t x_vector = 0;
         std::size_t z_vector = 0;
 
-        unsigned int sign_bit = 0;
-        unsigned int imag_bit = 0;
         std::complex<float> phase = 1;
+
+        bool sign_bit = 0;
+        bool imag_bit = 0;
 
       public:
         Pauli(const std::size_t number_qubits, const std::size_t x_vector, const std::size_t z_vector,
