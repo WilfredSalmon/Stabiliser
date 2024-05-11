@@ -61,7 +61,7 @@ static void BM_Stabalizer( benchmark::State& state )
 
 	for ( auto _ : state )
 	{
-		const bool result = SimulationFunction( stabalizer_data );
+		bool result = SimulationFunction( stabalizer_data );
 		assert( result == TData::expected_result );
 		benchmark::DoNotOptimize( result );
 	}
