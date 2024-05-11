@@ -2,6 +2,7 @@
 
 #include "f2_helper.h"
 
+#include <cassert>
 #include <algorithm>
 #include <optional>
 #include <vector>
