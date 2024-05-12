@@ -5,7 +5,11 @@ namespace fst
 {
     Pauli::Pauli(const std::size_t number_qubits, const std::size_t x_vector, const std::size_t z_vector,
                  const bool sign_bit, const bool imag_bit)
-        : number_qubits(number_qubits), x_vector(x_vector), z_vector(z_vector), sign_bit(sign_bit), imag_bit(imag_bit)
+        : number_qubits(number_qubits)
+        , x_vector(x_vector)
+        , z_vector(z_vector)
+        , sign_bit(sign_bit)
+        , imag_bit(imag_bit)
     {
         update_phase();
     }
@@ -75,7 +79,8 @@ namespace fst
 
         for (size_t index = 0; index < size; index++)
         {
-            const std::complex<float> expected_phase = vector_phase * sign_f2_dot_product(index, z_vector) * vector[index];
+            const std::complex<float> expected_phase =
+                vector_phase * sign_f2_dot_product(index, z_vector) * vector[index];
             if (vector[index ^ x_vector] != expected_phase)
             {
                 return false;
@@ -84,5 +89,4 @@ namespace fst
 
         return true;
     }
-
 }

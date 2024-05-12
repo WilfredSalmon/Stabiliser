@@ -1,9 +1,8 @@
-#ifndef _FAST_STABILISER_PAULI_H
-#define _FAST_STABILISER_PAULI_H
+#pragma once
 
 #include <complex>
-#include <vector>
 #include <span>
+#include <vector>
 
 // TODO: add verification for pauli/pauli and pauli/vector multiplication where
 // dimensions don't match
@@ -58,5 +57,3 @@ namespace fst
         bool operator==(const Pauli &other) const = default;
     };
 }
-
-#endif

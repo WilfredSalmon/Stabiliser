@@ -109,7 +109,7 @@ namespace
     {
         SECTION("no overlapping X and Z")
         {
-            Pauli pauli(2, 0b11, 0b10, 0, 0);       // XZ X
+            Pauli pauli(2, 0b11, 0b10, 0, 0);             // XZ X
             const Pauli other_pauli(2, 0b01, 0b10, 1, 1); // Z  X
 
             const Pauli expected_pauli(2, 0b10, 0, 1, 1); // X 1
@@ -121,7 +121,7 @@ namespace
 
         SECTION("overlapping X and Z")
         {
-            Pauli pauli(3, 0b110, 0b011, 1, 1);       // i X XZ Z
+            Pauli pauli(3, 0b110, 0b011, 1, 1);             // i X XZ Z
             const Pauli other_pauli(3, 0b010, 0b101, 1, 1); // i Z X  Z
 
             const Pauli expected_pauli(3, 0b100, 0b110, 0, 0); // XZ Z 1
@@ -136,7 +136,7 @@ namespace
     {
         SECTION("commuting")
         {
-            const Pauli pauli(3, 0b110, 0b011, 1, 1); // i X XZ Z
+            const Pauli pauli(3, 0b110, 0b011, 1, 1);       // i X XZ Z
             const Pauli other_pauli(3, 0b010, 0b101, 1, 1); // i Z X  Z
 
             REQUIRE(pauli.commutes_with(other_pauli));
@@ -145,7 +145,7 @@ namespace
 
         SECTION("anticommuting")
         {
-            const Pauli pauli(3, 0b110, 0b001, 1, 1); // i X X Z
+            const Pauli pauli(3, 0b110, 0b001, 1, 1);       // i X X Z
             const Pauli other_pauli(3, 0b010, 0b101, 1, 1); // i Z X Z
 
             REQUIRE(pauli.anticommutes_with(other_pauli));

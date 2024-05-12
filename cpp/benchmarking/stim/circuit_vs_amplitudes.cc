@@ -1,10 +1,10 @@
 #include "circuit_vs_amplitudes.h"
 
-#include "vector_simulator.h"
 #include "twiddle.h"
+#include "vector_simulator.h"
 
-#include <limits>
 #include <cassert>
+#include <limits>
 
 using namespace stim;
 
@@ -37,8 +37,7 @@ inline static size_t compute_occupation(const std::vector<std::complex<float>> &
     return c;
 }
 
-bool stim::stabilizer_state_vector_to_circuit(
-    const std::vector<std::complex<float>> &state_vector)
+bool stim::stabilizer_state_vector_to_circuit(const std::vector<std::complex<float>> &state_vector)
 {
     if (!is_power_of_2(state_vector.size()))
     {
