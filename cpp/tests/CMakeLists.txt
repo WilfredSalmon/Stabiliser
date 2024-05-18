@@ -5,6 +5,7 @@ add_executable( tests
     stabiliser_state_test.cpp
     stabiliser_state_from_statevector_test.cpp
     pauli_test.cpp
+    check_matrix_test.cpp
 )
 
 target_link_libraries( tests PRIVATE Catch2::Catch2WithMain FastStabiliser )

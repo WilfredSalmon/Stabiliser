@@ -36,12 +36,6 @@
       "displayName": "Build (RelWithDebInfo)",
       "description": "Build with Ninja/vcpkg (RelWithDebInfo)",
       "configuration": "RelWithDebInfo"
-    },
-    {
-      "name": "ninja-vcpkg",
-      "configurePreset": "ninja-multi-vcpkg",
-      "displayName": "Build",
-      "description": "Build with Ninja/vcpkg"
     }
   ],
   "testPresets": [

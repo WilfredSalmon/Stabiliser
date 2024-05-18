@@ -28,6 +28,14 @@ namespace fst
         return std::has_single_bit(number);
     }
 
+    /// Returns the binary digit of number at index index (zero indexed)
+    /// (as a bool)
+    template <std::unsigned_integral T, std::unsigned_integral U>
+    constexpr bool bit_set_at(const T number, const U index) noexcept
+    {
+        return (number >> index) & 1;
+    }
+
     /// If true, return -1, else return 1
     constexpr int min1_pow(const bool value) noexcept
     {

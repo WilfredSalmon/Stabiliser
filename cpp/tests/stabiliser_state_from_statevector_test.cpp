@@ -34,6 +34,35 @@ namespace
 
         return statevector;
     }
+
+    std::array<std::complex<float>, 32> get_five_qubit_stabiliser_statevector_with_phase(
+        const std::complex<float> phase)
+    {
+        std::array<std::complex<float>, 32> statevector = get_five_qubit_stabiliser_statevector();
+
+        for (auto &elt : statevector)
+        {
+            elt *= phase;
+        }
+
+        return statevector;
+    }
+
+    Stabiliser_State get_expected_five_qubit_stabiliser_state(const std::complex<float> global_phase)
+    {
+        Stabiliser_State state(5, 3);
+
+        state.basis_vectors = {6, 9, 16};
+        state.shift = 1;
+
+        state.real_linear_part = 5;
+        state.imaginary_part = 1;
+        state.quadratic_form = {6};
+        state.global_phase = global_phase;
+
+        state.row_reduced = true;
+        return state;
+    }
 }
 
 TEST_CASE("testing correct stabiliser states", "[statevector -> stabiliser state]")
@@ -61,14 +90,8 @@ TEST_CASE("testing correct stabiliser states", "[statevector -> stabiliser state
 
     SECTION("5 qubits, dimension 3, global factor")
     {
-        std::array statevector = get_five_qubit_stabiliser_statevector();
-
         const std::complex<float> global_phase(1 / std::sqrt(2.0f), 1 / std::sqrt(2.0f));
-
-        for (auto &elt : statevector)
-        {
-            elt *= global_phase;
-        }
+        const std::array statevector = get_five_qubit_stabiliser_statevector_with_phase(global_phase);
 
         REQUIRE(is_stabiliser_state(statevector));
     }
@@ -151,7 +174,7 @@ TEST_CASE("testing incorrect stabiliser states", "[statevector -> stabiliser sta
 
     SECTION("uniform with incorrect phase")
     {
-        const std::size_t vector_length = fst::integral_pow_2(5u);
+        constexpr std::size_t vector_length = fst::integral_pow_2(5u);
         const float normalisation_factor = static_cast<float>(1.0f / std::sqrt(vector_length));
 
         std::vector<std::complex<float>> statevector(vector_length, normalisation_factor);
@@ -176,21 +199,19 @@ TEST_CASE("get stabiliser state", "[statevector -> stabiilser state]")
 {
     SECTION("stabiliser input, dimension 5")
     {
-        const std::array statevector = get_five_qubit_stabiliser_statevector();
+        const std::complex<float> global_phase(1 / std::sqrt(2.0f), 1 / std::sqrt(2.0f));
+        const std::array statevector = get_five_qubit_stabiliser_statevector_with_phase(global_phase);
 
-        const Stabiliser_State state = stabiliser_from_statevector(statevector);
+        const Stabiliser_State expected_state = get_expected_five_qubit_stabiliser_state(global_phase);
+        Stabiliser_State state = stabiliser_from_statevector(statevector);
 
-        const std::vector<size_t> expected_basis{6, 9, 16};
-        const std::vector<size_t> expected_quadratic_form{6};
+        // allow for some tolerance
+        if (std::abs(state.global_phase - global_phase) <= 0.01)
+        {
+            state.global_phase = global_phase;
+        }
 
-        REQUIRE(state.number_qubits == 5);
-        REQUIRE(state.basis_vectors == expected_basis);
-        REQUIRE(state.shift == 1);
-        REQUIRE(state.real_linear_part == 5);
-        REQUIRE(state.imaginary_part == 1);
-        REQUIRE(state.quadratic_form == expected_quadratic_form);
-        REQUIRE(std::norm(state.global_phase - float(1)) <= 0.001);
-        REQUIRE(state.row_reduced == true);
+        REQUIRE(expected_state == state);
     }
 
     SECTION("non-stabiliser input")

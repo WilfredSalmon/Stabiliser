@@ -5,6 +5,7 @@ add_library( ${LIBRARY_TARGET_NAME}
     stabiliser_state.cpp
     stabiliser_state_from_statevector.cpp
     pauli.cpp
+    check_matrix.cpp
 )
 
 # Automatically include all public headers from the include folder

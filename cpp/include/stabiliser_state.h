@@ -43,5 +43,7 @@ namespace fst
         /// space (represented as an integer) with respect to the vector basis,
         /// find the value of the phase assigned to the corresponding state
         std::complex<float> get_phase(const std::size_t vector_index) const;
+
+        bool operator==(const Stabiliser_State &other) const = default;
     };
 }

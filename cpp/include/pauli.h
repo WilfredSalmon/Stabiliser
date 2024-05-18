@@ -54,6 +54,23 @@ namespace fst
         /// Note, the current instance is set to the result.
         void multiply_by_pauli_on_right(const Pauli &other_pauli);
 
+        [[nodiscard]] std::size_t get_x_vector() const noexcept
+        {
+            return x_vector;
+        }
+        [[nodiscard]] std::size_t get_z_vector() const noexcept
+        {
+            return z_vector;
+        }
+        [[nodiscard]] bool get_sign_bit() const noexcept
+        {
+            return sign_bit;
+        }
+        [[nodiscard]] bool get_imag_bit() const noexcept
+        {
+            return imag_bit;
+        }
+
         bool operator==(const Pauli &other) const = default;
     };
 }
