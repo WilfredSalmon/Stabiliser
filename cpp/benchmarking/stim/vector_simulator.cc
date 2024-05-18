@@ -28,8 +28,8 @@ VectorSimulator::VectorSimulator(size_t num_qubits)
     state[0] = 1;
 }
 
-inline std::vector<std::complex<float>> mat_vec_mul(
-    const std::vector<std::vector<std::complex<float>>> &matrix, const std::vector<std::complex<float>> &vec)
+inline std::vector<std::complex<float>> mat_vec_mul(const std::vector<std::vector<std::complex<float>>> &matrix,
+                                                    const std::vector<std::complex<float>> &vec)
 {
     std::vector<std::complex<float>> result;
     for (size_t row = 0; row < vec.size(); row++)
@@ -44,8 +44,8 @@ inline std::vector<std::complex<float>> mat_vec_mul(
     return result;
 }
 
-void VectorSimulator::apply(
-    const std::vector<std::vector<std::complex<float>>> &matrix, const std::vector<size_t> &qubits)
+void VectorSimulator::apply(const std::vector<std::vector<std::complex<float>>> &matrix,
+                            const std::vector<size_t> &qubits)
 {
     size_t n = size_t{1} << qubits.size();
     assert(matrix.size() == n);
@@ -116,11 +116,7 @@ void VectorSimulator::apply_CX(size_t qubit1, size_t qubit2)
 bool VectorSimulator::smooth_stabilizer_state(std::complex<float> base_value)
 {
     std::vector<std::complex<float>> ratio_values{
-        {0, 0},
-        {1, 0},
-        {-1, 0},
-        {0, 1},
-        {0, -1},
+        {0, 0}, {1, 0}, {-1, 0}, {0, 1}, {0, -1},
     };
     for (size_t k = 0; k < state.size(); k++)
     {

@@ -1,11 +1,10 @@
-#ifndef _FAST_STABILISER_CHECK_MATRIX_H
-#define _FAST_STABILISER_CHECK_MATRIX_H
+#pragma once
 
 #include "pauli.h"
 #include "stabiliser_state.h"
 
-#include <vector>
 #include <complex>
+#include <vector>
 
 namespace fst
 {
@@ -14,15 +13,13 @@ namespace fst
     {
         std::size_t number_qubits = 0;
         bool row_reduced = false;
-        
+
         std::vector<Pauli> paulis;
         std::vector<Pauli *> z_only_stabilisers;
         std::vector<Pauli *> x_stabilisers;
 
-        Check_Matrix(std::vector<Pauli> paulis);
+        explicit Check_Matrix(std::vector<Pauli> in_paulis);
 
-        void categorise_paulis();
-        
         Stabiliser_State get_stabiliser_state();
         std::vector<std::complex<float>> get_state_vector();
 
@@ -36,5 +33,3 @@ namespace fst
         void set_linear_and_quadratic_forms(Stabiliser_State &state) const;
     };
 }
-
-#endif

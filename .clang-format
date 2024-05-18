@@ -1,0 +1,8 @@
+BasedOnStyle: Microsoft
+NamespaceIndentation: All
+FixNamespaceComments: False
+InsertBraces: True
+AlwaysBreakTemplateDeclarations: Yes
+PackConstructorInitializers: Never
+BreakConstructorInitializers: BeforeComma
+IndentCaseLabels: Yes

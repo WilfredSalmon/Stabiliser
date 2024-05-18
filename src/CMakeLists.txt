@@ -1,4 +1,0 @@
-add_subdirectory(pauli)
-add_subdirectory(stabiliser_state)
-add_subdirectory(benchmarking)
-add_subdirectory(tests)

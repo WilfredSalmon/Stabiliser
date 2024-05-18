@@ -31,10 +31,11 @@
       "configuration": "Release"
     },
     {
-      "name": "ninja-vcpkg",
+      "name": "ninja-vcpkg-release-debug",
       "configurePreset": "ninja-multi-vcpkg",
-      "displayName": "Build",
-      "description": "Build with Ninja/vcpkg"
+      "displayName": "Build (RelWithDebInfo)",
+      "description": "Build with Ninja/vcpkg (RelWithDebInfo)",
+      "configuration": "RelWithDebInfo"
     }
   ],
   "testPresets": [

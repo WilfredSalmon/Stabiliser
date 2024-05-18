@@ -22,7 +22,5 @@ elseif( MINGW )
 	set( DVCPKG_TARGET_TRIPLET x64-mingw-static ) 
 endif()
 
-find_package( Catch2 3 REQUIRED )
-
-include( CTest )
-add_subdirectory( "src" )
+enable_testing()
+add_subdirectory( "cpp" )
