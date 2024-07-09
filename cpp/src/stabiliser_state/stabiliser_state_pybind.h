@@ -13,7 +13,6 @@ using namespace pybind11::literals;
 
 // TODO: Try and export the operator == 
 namespace fst_pybind {
-namespace fst_pybind {
     void init_stabiliser_state(py::module_ &m)
     {
         py::class_<Stabiliser_State>(m, "Stabiliser_State")
