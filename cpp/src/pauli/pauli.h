@@ -35,7 +35,7 @@ namespace fst
         /// Given a statevector x on the same number of qubits as the Pauli P, check
         /// whether or not Px = (-1)^(eig_sign) x, i.e. whether x is an eigenstate of P
         /// with eigenvalue (-1)^(eig_sign).
-        bool has_eigenstate(const std::vector<std::complex<float>> &vector, const unsigned int eign_sign) const;
+        bool has_eigenstate(const std::vector<std::complex<float>> &vector, const unsigned int eig_sign) const;
 
         /// Returns the matrix of the Pauli (with respect to the computational basis)
         std::vector<std::vector<std::complex<float>>> get_matrix() const;
