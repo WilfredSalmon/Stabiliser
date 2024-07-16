@@ -44,7 +44,7 @@ def time_function_with_generator(function_to_time, generator) -> np.ndarray:
     return times
 
 
-base_filestring = './python/benchmarking/data'
+base_filestring = './python/benchmarking/data/ming'
 
 
 def append_benchmarking_data(pre_string='', title='', functions_to_time=[], 
