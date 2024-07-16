@@ -1,5 +1,4 @@
 import benchmarking.generators as gs
-import benchmarking.brute_force.stab_state_check as brute
 
 import sys
 PATH_TO_LIBRARY = './build/ninja-multi-vcpkg/cpp/src/Release'
@@ -24,11 +23,11 @@ configs = [
         ],
         "generation_types": [
             gs.random_stab_state_with_assump,
-            gs.random_stab_state
+            # gs.random_stab_state
         ],
         "generation_strings": [
             "random stab state with assump",
-            "random stab state without assump"
+            # "random stab state without assump"
         ]
     },
 
