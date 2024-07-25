@@ -2,9 +2,10 @@
 
 #include "util/f2_helper.h"
 
-#include <algorithm>
 #include <optional>
 #include <vector>
+
+using namespace fst;
 
 namespace
 {
@@ -12,8 +13,6 @@ namespace
 	auto stabiliser_from_statevector_internal(const std::span<const std::complex<float>> statevector)
 		-> std::conditional_t<return_state, std::optional<fst::Stabiliser_State>, bool>
 	{
-		using namespace fst;
-
 		const std::size_t state_vector_size = statevector.size();
 
 		if (!is_power_of_2(state_vector_size))
@@ -24,7 +23,7 @@ namespace
 		const std::size_t number_qubits = integral_log_2(state_vector_size);
 		std::size_t shift = 0;
 
-		while (shift < state_vector_size && statevector[shift] == float(0))
+		while (shift < state_vector_size && statevector[shift] == .0f)
 		{
 			++shift;
 		}
@@ -37,6 +36,8 @@ namespace
 		std::vector<std::size_t> vector_space_indices;
 		vector_space_indices.reserve(state_vector_size + 1);
 		vector_space_indices.push_back(0);
+
+		// TODO: create seperate array of the statevector entries here as well, so we don't have to keep XORing with shift later on
 
 		for (std::size_t index = shift + 1; index < state_vector_size; index++)
 		{
@@ -63,8 +64,6 @@ namespace
 			return {};
 		}
 
-		std::ranges::sort(vector_space_indices);
-
 		std::vector<std::size_t> basis_vectors;
 		basis_vectors.reserve(dimension);
 
@@ -80,7 +79,7 @@ namespace
 
 			std::complex<float> phase = statevector[basis_vector ^ shift] / first_entry;
 
-			if (std::norm(phase - float(-1)) < 0.125)
+			if (std::norm(phase + 1.0f) < 0.125)
 			{
 				real_linear_part ^= weight_one_string;
 			}
@@ -93,7 +92,7 @@ namespace
 				real_linear_part ^= weight_one_string;
 				imaginary_part ^= weight_one_string;
 			}
-			else if (std::norm(phase - float(1)) >= 0.125)
+			else if (std::norm(phase - 1.0f) >= 0.125)
 			{
 				return {};
 			}
@@ -118,11 +117,11 @@ namespace
 
 				const std::complex<float> quadratic_form_eval = statevector[total_index] / (first_entry * linear_eval);
 
-				if (std::norm(quadratic_form_eval - float(-1)) < 0.125)
+				if (std::norm(quadratic_form_eval + 1.0f) < 0.125)
 				{
 					quadratic_form[vector_index] = 1;
 				}
-				else if(std::norm(quadratic_form_eval - float(1)) < 0.125)
+				else if(std::norm(quadratic_form_eval - 1.0f) < 0.125)
 				{
 					quadratic_form[vector_index] = 0;
 				}
