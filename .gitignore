@@ -6,4 +6,5 @@ CMakeUserPresets.json
 /build
 /vcpkg_installed
 /out
-# **/venv
+**/venv
+**/*.egg-info
