@@ -1,1 +1,1 @@
-include *.a *.so
+include src/stab_tools/build/*.a src/stab_tools/build/*.so
