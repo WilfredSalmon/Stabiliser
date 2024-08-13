@@ -39,7 +39,7 @@ def time_function_with_generator(function_to_time, generator, qubit_numbers : Li
 
     return times
 
-base_filestring = './python/benchmarking/data'
+base_filestring = './data'
 
 def append_benchmarking_data(pre_string='', functions_to_time=[], 
                              function_strings=[], generation_types=[], generation_strings=[], min_qubit_number = 1, max_qubit_number = 1, reps = 1):

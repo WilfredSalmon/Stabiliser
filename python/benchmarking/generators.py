@@ -7,8 +7,6 @@ import qiskit.quantum_info as qi
 from math import sqrt
 from typing import Tuple
 
-PATH_TO_LIBRARY = './build/ninja-multi-vcpkg/cpp/src/Release'
-sys.path.append(PATH_TO_LIBRARY)
 from fast import Pauli, Stabiliser_State
 
 def random_unitary(n: int) -> np.ndarray:
