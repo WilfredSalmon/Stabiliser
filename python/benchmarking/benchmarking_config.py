@@ -30,11 +30,46 @@ def stim_C1_test(matrix):
 
 configs = [
     {
+        "pre_string": "converting C1 to efficient rep",
+        "functions_to_time": [
+            fst.clifford_from_matrix,
+            qiskit_C1_converter,
+            stim_C1_convertor
+        ],
+        "function_strings": [
+            "our method",
+            "Qiskit",
+            "stim"
+        ],
+        "generation_types": [
+            gs.random_clifford,
+            gs.random_clifford_with_assumption,
+            gs.get_identity_matrix,
+            gs.get_Hadamard_matrix,
+            gs.get_anti_identiy_matrix,
+        ],
+        "generation_strings": [
+            "random clifford without assump",
+            "random clifford with assump",
+            "identity matrix",
+            "Hadamard matrix",
+            "anti-identity matrix"
+        ],
+        "min_qubit_number" : 1,
+        "max_qubit_number" : 9,
+        "reps" : int(1e3) 
+    },
+
+    {
         "pre_string": "testing C1",
         "functions_to_time":[
+            fst.is_clifford_matrix,
+            qiskit_C1_test,
             stim_C1_test
         ],
         "function_strings": [
+            "our method",
+            "Qiskit",
             "stim"
         ],
         "generation_types": [
