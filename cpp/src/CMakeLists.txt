@@ -23,3 +23,5 @@ target_include_directories( _stab_tools PRIVATE
     "${PROJECT_SOURCE_DIR}/cpp/src"
 )
 target_link_libraries(_stab_tools PRIVATE fast_stabiliser)
+
+set_target_properties(_stab_tools PROPERTIES INSTALL_RPATH "$ORIGIN")
