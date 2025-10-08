@@ -24,4 +24,4 @@ target_include_directories( _stab_tools PRIVATE
 )
 target_link_libraries(_stab_tools PRIVATE fast_stabiliser)
 
-# set_target_properties(fast_stabiliser PROPERTIES CMAKE_INSTALL_RPATH "$ORIGIN")
+set_target_properties(fast_stabiliser PROPERTIES CMAKE_INSTALL_RPATH "$ORIGIN")
