@@ -24,4 +24,6 @@ target_include_directories( _stab_tools PRIVATE
 )
 target_link_libraries(_stab_tools PRIVATE fast_stabiliser)
 
+SET(CMAKE_SKIP_BUILD_RPATH  FALSE)
+SET(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 set(CMAKE_INSTALL_RPATH $ORIGIN)
