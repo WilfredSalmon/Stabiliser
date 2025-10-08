@@ -1,5 +1,6 @@
 cmake_minimum_required( VERSION 3.28 )
 
+set ( CMAKE_BUILD_RPATH_USE_ORIGIN ON )
 set ( CMAKE_COMPILE_WARNING_AS_ERROR ON )
 set ( CMAKE_CXX_STANDARD 23 )
 
