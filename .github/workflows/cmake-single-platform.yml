@@ -25,8 +25,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # os: [ubuntu-latest, macos-latest, windows-latest, macos-13] # macos-latest uses arm, macos-13 uses intel x86
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest, macos-13] # macos-latest uses arm, macos-13 uses intel x86
+        # os: [ubuntu-latest]
         python-version : ["3.8", "3.9", "3.10", "3.11", "3.12", "3.x"]
         # include:
         #   - os: windows-latest
@@ -153,8 +153,8 @@ jobs:
       - name: Build a binary wheel only
         run: python3 -m build --wheel stabiliser-tools/
         if: ${{!(matrix.os == 'ubuntu-latest' && matrix.python-version == '3.x')}}
-      - name: Change 'linux' to 'manylinux'
-        run: for file in $(find stabiliser-tools/dist/ -name "*linux_x86_64.whl"); do mv $file `echo $file | sed s/linux_x86_64.whl$/manylinux2014_x86_64.whl/`; done
+      - name: Duplicate and change 'linux' to 'manylinux'
+        run: for file in $(find stabiliser-tools/dist/ -name "*linux_x86_64.whl"); do cp $file `echo $file | sed s/linux_x86_64.whl$/manylinux2014_x86_64.whl/`; done
         if: ${{matrix.os == 'ubuntu-latest'}}
       - name: Rename macos wheel based on CPU architecture (arm)
         run: for file in $(find stabiliser-tools/dist/ -name "*universal2.whl"); do mv $file `echo $file | sed s/universal2.whl$/arm64.whl/`; done
@@ -168,73 +168,24 @@ jobs:
           name: python-package-distributions, os ${{ matrix.os }}, python ver ${{matrix.python-version}}
           path: stabiliser-tools/dist/
 
-  publish-to-testpypi:
-    name: Publish Python 🐍 distribution 📦 to TestPyPI
-    needs:
-    - cmake_and_build
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        # os: [ubuntu-latest, macos-latest, windows-latest, macos-13]
-        os: [ubuntu-latest]
-        python-version : ["3.8", "3.9", "3.10", "3.11", "3.12", "3.x"]
-
-    environment:
-      name: testpypi
-      url: https://test.pypi.org/p/stabiliser-tools
-
-    permissions:
-      id-token: write  # IMPORTANT: mandatory for trusted publishing
-
-    steps:
-    - name: Download dist files
-      uses: actions/download-artifact@v4
-      with:
-        name: python-package-distributions, os ${{ matrix.os }}, python ver ${{matrix.python-version}}
-        path: stabiliser-tools/dist/
-    - name: Publish distribution 📦 to TestPyPI
-      uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        repository-url: https://test.pypi.org/legacy/
-        packages-dir: stabiliser-tools/dist/
-  
-  # create-new-github-release:
-  #   name: Create new tag for GitHub Release
-  #   needs: cmake_and_build
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: Create GitHub Release
-  #     env:
-  #       GITHUB_TOKEN: ${{ github.token }}
-  #     run: >-
-  #       gh release create
-  #       'stabiliser-tools-1.0.8'
-  #       --repo '${{ github.repository }}'
-  #       --notes ""
-
-  # publish-to-pypi:
-  #   name: >-
-  #     Publish Python 🐍 distribution 📦 to PyPI; 
-  #     Sign the Python 🐍 distribution 📦 with Sigstore
-  #     and upload them to GitHub Release
-  #   needs: 
-  #   - create-new-github-release
+  # publish-to-testpypi:
+  #   name: Publish Python 🐍 distribution 📦 to TestPyPI
+  #   needs:
   #   - cmake_and_build
   #   runs-on: ubuntu-latest
   #   strategy:
   #     fail-fast: false
   #     matrix:
-  #       os: [ubuntu-latest, macos-latest, windows-latest, macos-13]
+  #       # os: [ubuntu-latest, macos-latest, windows-latest, macos-13]
+  #       os: [ubuntu-latest]
   #       python-version : ["3.8", "3.9", "3.10", "3.11", "3.12", "3.x"]
 
   #   environment:
-  #     name: pypi
-  #     url: https://pypi.org/p/stabiliser-tools
+  #     name: testpypi
+  #     url: https://test.pypi.org/p/stabiliser-tools
 
   #   permissions:
-  #     contents: write  # IMPORTANT: mandatory for making GitHub Releases
-  #     id-token: write  # IMPORTANT: mandatory for trusted publishing, sigstore
+  #     id-token: write  # IMPORTANT: mandatory for trusted publishing
 
   #   steps:
   #   - name: Download dist files
@@ -242,17 +193,66 @@ jobs:
   #     with:
   #       name: python-package-distributions, os ${{ matrix.os }}, python ver ${{matrix.python-version}}
   #       path: stabiliser-tools/dist/
-  #   - name: Publish distribution 📦 to PyPI
+  #   - name: Publish distribution 📦 to TestPyPI
   #     uses: pypa/gh-action-pypi-publish@release/v1
   #     with:
+  #       repository-url: https://test.pypi.org/legacy/
   #       packages-dir: stabiliser-tools/dist/
-  #   - name: Upload artifact signatures to GitHub Release
-  #     env:
-  #       GITHUB_TOKEN: ${{ github.token }}
-  #     # Upload to GitHub Release using the `gh` CLI.
-  #     # `dist/` contains the built packages, and the
-  #     # sigstore-produced signatures and certificates.
-  #     run: >-
-  #       gh release upload
-  #       'stabiliser-tools-1.0.8' stabiliser-tools/dist/**
-  #       --repo '${{ github.repository }}'
+  
+  create-new-github-release:
+    name: Create new tag for GitHub Release
+    needs: cmake_and_build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Create GitHub Release
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      run: >-
+        gh release create
+        'stabiliser-tools-1.0.8'
+        --repo '${{ github.repository }}'
+        --notes ""
+
+  publish-to-pypi:
+    name: >-
+      Publish Python 🐍 distribution 📦 to PyPI; 
+      Sign the Python 🐍 distribution 📦 with Sigstore
+      and upload them to GitHub Release
+    needs: 
+    - create-new-github-release
+    - cmake_and_build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest, macos-13]
+        python-version : ["3.8", "3.9", "3.10", "3.11", "3.12", "3.x"]
+
+    environment:
+      name: pypi
+      url: https://pypi.org/p/stabiliser-tools
+
+    permissions:
+      contents: write  # IMPORTANT: mandatory for making GitHub Releases
+      id-token: write  # IMPORTANT: mandatory for trusted publishing, sigstore
+
+    steps:
+    - name: Download dist files
+      uses: actions/download-artifact@v4
+      with:
+        name: python-package-distributions, os ${{ matrix.os }}, python ver ${{matrix.python-version}}
+        path: stabiliser-tools/dist/
+    - name: Publish distribution 📦 to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        packages-dir: stabiliser-tools/dist/
+    - name: Upload artifact signatures to GitHub Release
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      # Upload to GitHub Release using the `gh` CLI.
+      # `dist/` contains the built packages, and the
+      # sigstore-produced signatures and certificates.
+      run: >-
+        gh release upload
+        'stabiliser-tools-1.0.8' stabiliser-tools/dist/**
+        --repo '${{ github.repository }}'
