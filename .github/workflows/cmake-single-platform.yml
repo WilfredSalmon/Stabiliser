@@ -154,7 +154,7 @@ jobs:
         run: python3 -m build --wheel stabiliser-tools/
         if: ${{!(matrix.os == 'ubuntu-latest' && matrix.python-version == '3.x')}}
       - name: Change 'linux' to 'manylinux'
-        run: for file in $(find stabiliser-tools/dist/ -name "*linux_x86_64.whl"); do cp $file `echo $file | sed s/linux_x86_64.whl$/manylinux2014_x86_64.whl/`; mv $file `echo $file | sed s/linux_x86_64.whl$/none.whl/`; done
+        run: for file in $(find stabiliser-tools/dist/ -name "*linux_x86_64.whl"); do cp $file `echo $file | sed s/linux_x86_64.whl$/manylinux2014_x86_64.whl/`; mv $file `echo $file | sed s/linux_x86_64.whl$/any.whl/`; done
         if: ${{matrix.os == 'ubuntu-latest'}}
       - name: Rename macos wheel based on CPU architecture (arm)
         run: for file in $(find stabiliser-tools/dist/ -name "*universal2.whl"); do mv $file `echo $file | sed s/universal2.whl$/arm64.whl/`; done
