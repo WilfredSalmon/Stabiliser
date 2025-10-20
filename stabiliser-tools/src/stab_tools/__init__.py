@@ -31,6 +31,7 @@ array([[ 0.5,  0.5,  0.5,  0.5],
 True
 """
 
+import json
 import os
 import sys
 
@@ -40,7 +41,10 @@ ENV = ''
 if PATH_TO_LIBRARY not in sys.path:
     sys.path.extend([PATH_TO_LIBRARY])
 
-if sys.platform in ['linux', 'darwin']:  # TODO Check
+with open('properties.json') as f:
+    properties = json.load(f)
+
+if properties['is_first_import'] and sys.platform in ['linux', 'darwin']:
     try:
         match sys.platform:
             case 'linux':
@@ -60,6 +64,10 @@ if sys.platform in ['linux', 'darwin']:  # TODO Check
         if sys.platform == 'darwin':
             print('(On Mac OS, the appropriate environment variable may be DYLD_LIBRARY_PATH or DYLD_FALLBACK_LIBRARY_PATH)',
                   file=sys.stderr)
+    finally:
+        properties['is_first_import'] = False
+        with open('properties.json', 'w') as f:
+            json.dump(properties, f)
 
 from _stab_tools import *
 del os, sys, PATH_TO_LIBRARY, ENV
